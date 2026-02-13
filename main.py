@@ -7,7 +7,7 @@ from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import StandardScaler
 
 df = pd.read_csv('insurance - insurance.csv')
-# print(df.head(3))
+print(df.head(3))
 
 # print(df.isna().sum())  
 
@@ -24,22 +24,22 @@ x_train,x_test, y_train,y_test = train_test_split(x,y,test_size=0.2,random_state
 # print(y_test.shape)
 
 
-ohe = OneHotEncoder(drop = 'first' , sparse_output = False )
+ohe = OneHotEncoder(drop = 'first' , sparse_output = False )  # First we apply OneHotEncoding on Sex, Smoker, Region categorical data
 x_train_sex_smoker_region = ohe.fit_transform(x_train[['sex' , 'smoker','region']])
 x_test_sex_smoker_region = ohe.fit_transform(x_test[['sex' , 'smoker','region']])
-print(x_train_sex_smoker_region.shape)
+# print(x_train_sex_smoker_region.shape)
 
-
+# Secondly we apply onehotencoding on numerical columns that are age, bmi, children
 x_train_age_bmi_children = x_train.drop(columns =['smoker', 'region','sex']).values
 x_test_age_bmi_children = x_test.drop(columns =['smoker', 'region','sex']).values
-print(x_train_age_bmi_children.shape)
+# print(x_train_age_bmi_children.shape)
 
 
 x_train_transformed = np.concatenate((x_train_age_bmi_children ,x_train_sex_smoker_region) , axis = 1)
-print(x_train_transformed.shape)
+# print(x_train_transformed.shape)
 
 transformers = ColumnTransformer(transformers=[
     ('a1',OneHotEncoder(sparse_output=False, drop='first'),['sex','smoker','region'])
 ],remainder='passthrough')
 
-print(transformers.fit_transform(x_train).shape)
+# print(transformers.fit_transform(x_train).shape)
