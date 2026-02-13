@@ -38,4 +38,8 @@ print(x_train_age_bmi_children.shape)
 x_train_transformed = np.concatenate((x_train_age_bmi_children ,x_train_sex_smoker_region) , axis = 1)
 print(x_train_transformed.shape)
 
+transformers = ColumnTransformer(transformers=[
+    ('a1',OneHotEncoder(sparse_output=False, drop='first'),['sex','smoker','region'])
+],remainder='passthrough')
 
+print(transformers.fit_transform(x_train).shape)
